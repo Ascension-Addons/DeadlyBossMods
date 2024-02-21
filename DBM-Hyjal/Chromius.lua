@@ -19,7 +19,7 @@ mod:RegisterEvents(
 -- Final Countdown
 local specWarnFinalCountdown			= mod:NewSpecialWarning("Final Countdown! The Hourglass will vibrate %s times!", 2141735)
 local warnCountdown						= mod:NewAnnounce("There are %s vibrations left!", 2141735)
-local timerNextFinalCountdown			= mod:NewTimer(60,"Next Final Countdown: (%s)", 2141735)
+local timerNextFinalCountdown			= mod:NewTimer(62,"Next Final Countdown: (%s)", 2141735)
 local timerFinalDuration				= mod:NewTimer(2,"Final Countdown (%s ticks)", 2141735)
 local warnFinalCDSoon					= mod:NewAnnounce("Final Countdown soon!", 2141735)
 local timerFinalDelay					= mod:NewTimer(3, "Vibration travel time", 2141735)
@@ -92,9 +92,9 @@ function mod:OnCombatStart(delay)
 	ThrallHP		= 0
 	insanity		= 0
 	timerArcaneBreath:Start(40-delay)
-	timerNextFinalCountdown:Start(65-delay, count)
+	timerNextFinalCountdown:Start(67-delay, count)
 	warnFinalCDSoon:Schedule(60-delay)
-	self:ScheduleMethod(65-delay,"FinalCountdown")
+	self:ScheduleMethod(67-delay,"FinalCountdown")
 end
 
 function mod:FinalCountdown()
@@ -105,9 +105,9 @@ function mod:FinalCountdown()
 		timerFinalDuration:Start(duration, count)
 		count = count + 1
 		duration = duration + 2.5
-		timerNextFinalCountdown:Start(60,count)
-		warnFinalCDSoon:Schedule(55)
-		self:ScheduleMethod(60,"FinalCountdown")
+		timerNextFinalCountdown:Start(62,count)
+		warnFinalCDSoon:Schedule(57)
+		self:ScheduleMethod(62,"FinalCountdown")
 	elseif phase == 1 then
 		timerFinalDelay:Start(3)
 		self:ScheduleMethod(3,"FinalDuration")

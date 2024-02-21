@@ -174,6 +174,8 @@ function mod:OnCombatEnd()
 	target1 = nil
 	target2 = nil
 	target3 = nil
+	self:UnscheduleMethod("Nightmare")
+	self:UnscheduleMethod("InfernalRain")
 end
 
 
