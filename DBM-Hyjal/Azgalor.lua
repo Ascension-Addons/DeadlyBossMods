@@ -127,8 +127,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 26665 then
+	if args.destName == "Legion Portal" then
 		DBM.BossHealth:Clear()
 	end
 end
