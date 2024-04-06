@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 5019 $"):sub(12, -3))
 mod:SetCreatureID(22947)
-mod:RegisterCombat("yell", DBM_SHAHRAZ_YELL_PULL)
+mod:RegisterCombat("yell", L.DBM_SHAHRAZ_YELL_PULL)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
@@ -53,6 +53,9 @@ local warningShahrazFila		= mod:NewAnnounce(L.ShahrazFila, 2, 2144003)
 local warningShahrazMater		= mod:NewAnnounce(L.ShahrazMater, 2, 2144001)
 local warningWiShahrazVirgo		= mod:NewAnnounce(L.ShahrazVirgo, 2, 2144096)
 
+--Ascended
+local warningALittleChat		= mod:NewSpellAnnounce(2144007, 3)
+local timerNextALittleChat		= mod:NewNextTimer(48, 2144007)
 
 --local
 local isMother		=	false
@@ -62,6 +65,7 @@ local below10		=   false
 function mod:OnCombatStart(delay)
 	timerNextForcedThoughts:Start(15-delay)
 	timerNextFatalAttraction:Start(35-delay)
+	timerNextALittleChat:Start(20-delay)
 	self:ScheduleMethod(15-delay, "NewThoughts")
 	below20		=   false
 	below10		=   false
@@ -89,14 +93,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerSinisterThoughts:Stop()
 		timerVileThoughts:Stop()
 		timerWickedThoughts:Stop()
-		timerNextForcedThoughtsStop()
+		timerNextForcedThoughts:Stop()
 
 		timerNextFatalAttraction:Stop()
 
-		timerNextSinfulBeamStop()
-		timerNextSinisterBeamStop()
-		timerNextVileBeamStop()
-		timerNextWickedBeamStop()
+		timerNextSinfulBeam:Stop()
+		timerNextSinisterBeam:Stop()
+		timerNextVileBeam:Stop()
+		timerNextWickedBeam:Stop()
 	elseif args:IsSpellID(2144001) and args.amount and args.amount >= 8 and args.amount % 2 == 0 and DBM:AntiSpam(5, 1) then
 		warningShahrazMater:Show()
 	elseif args:IsSpellID(2144003) and args.amount and args.amount >= 8 and args.amount % 2 == 0 and DBM:AntiSpam(5, 1) then
@@ -105,11 +109,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		warningShahrazAvian:Show()
 	elseif args:IsSpellID(2144096) and args.amount and args.amount >= 8 and args.amount % 2 == 0 and DBM:AntiSpam(5, 1) then
 		warningWiShahrazVirgo:Show()
+	elseif args:IsSpellID(2144007) then
+		warningALittleChat:Show()
 	end
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(2144017) or args:IsSpellID(2144018) or args:IsSpellID(2144019) or args:IsSpellID(2144020) and DBM:Antispam() then
+	if args:IsSpellID(2144017) or args:IsSpellID(2144018) or args:IsSpellID(2144019) or args:IsSpellID(2144020) and DBM:AntiSpam() then
 		warningSinfulBeam:Show()
 		timerCastSinfulBeam:Start()
 		timerNextSinfulBeam:Start()
@@ -120,7 +126,7 @@ function mod:SPELL_DAMAGE(args)
 			timerVileThoughts:Stop()
 			timerWickedThoughts:Stop()
 		end
-	elseif args:IsSpellID(2144021) or args:IsSpellID(2144022) or args:IsSpellID(2144023) or args:IsSpellID(2144024) and DBM:Antispam() then
+	elseif args:IsSpellID(2144021) or args:IsSpellID(2144022) or args:IsSpellID(2144023) or args:IsSpellID(2144024) and DBM:AntiSpam() then
 		warningSinisterBeam:Show()
 		timerNextSinisterBeam:Start()
 		if args:IsPlayer() then
@@ -130,17 +136,17 @@ function mod:SPELL_DAMAGE(args)
 			timerVileThoughts:Stop()
 			timerWickedThoughts:Stop()
 		end
-	elseif args:IsSpellID(2144025) or args:IsSpellID(2144026) or args:IsSpellID(2144027) or args:IsSpellID(2144028) and DBM:Antispam() then
+	elseif args:IsSpellID(2144025) or args:IsSpellID(2144026) or args:IsSpellID(2144027) or args:IsSpellID(2144028) and DBM:AntiSpam() then
 		warningVileBeam:Show()
 		timerNextVileBeam:Start()
 		if args:IsPlayer() then
 			warningSinfulThoughts:Show()
 			timerSinfulThoughts:Stop()
-			warningVileThoughts:Stop()
+			timerSinisterThoughts:Stop()
 			timerVileThoughts:Start()
 			timerWickedThoughts:Stop()
 		end
-	elseif args:IsSpellID(2144029) or args:IsSpellID(2144030) or args:IsSpellID(2144031) or args:IsSpellID(2144032) and DBM:Antispam() then
+	elseif args:IsSpellID(2144029) or args:IsSpellID(2144030) or args:IsSpellID(2144031) or args:IsSpellID(2144032) and DBM:AntiSpam() then
 		warningWickedBeam:Show()	
 		timerNextWickedBeam:Start()
 		if args:IsPlayer() then

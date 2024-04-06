@@ -11,13 +11,17 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-    SpineYellOpt           = "Yell when you are affected by $spell:2142516",
-    DischargeYellOpt           = "Yell when you are affected by $spell:2142504"
+    SpineYellOpt                = "Yell when you are affected by $spell:2142516",
+    DischargeYellOpt            = "Yell when you are affected by $spell:2142504",
+    SpineIconsOpt				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(2142516)
 }
 
 L:SetMiscLocalization{
     SpineYell			    = "Spine on me!",
-    DBM_NAJENTUS_YELL_PULL	= "You will die in the name of Lady Vashj!";
+    DBM_NAJENTUS_YELL_PULL	= "You will die in the name of Lady Vashj!",
+    SayDischarge		    = "Static Charge on "..UnitName("PLAYER"),
+    SayDischargeFade        = "Discharge on "..UnitName("PLAYER"),
+    NewAdds                 = "New filth"
 }
 
 
@@ -51,14 +55,17 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-    SupremusCracked			= "%s on >%s< (%d)" --(args.spellName, args.destName, args.amount or 1)
+    SupremusCracked			= "%s on >%s< (%d)", --(args.spellName, args.destName, args.amount or 1)
+    WarnPhaseSoon		    = "Phase %s soon",
 }
 
 L:SetOptionLocalization{
-    SupremusCracked			= "Show $spell:2142751 targets and stack number warning" --(args.spellName, args.destName, args.amount or 1)
+    SupremusCracked			= "Show $spell:2142751 targets and stack number warning", --(args.spellName, args.destName, args.amount or 1)
+    threatIconsOpt			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(2142765)
 }
 
 L:SetMiscLocalization{
+    NewPillar                = "New vulcano"
 }
 
 -- DBM_SUPREMUS_NAME					= "Supremus";
@@ -123,6 +130,7 @@ L:SetOptionLocalization{
     }
 
 L:SetMiscLocalization{
+    DBM_GOREFIEND_YELL_PULL				= "Vengeance is mine!"
 }
 
 -- DBM_GOREFIEND_NAME					= "Teron Gorefiend";
@@ -151,6 +159,7 @@ L:SetOptionLocalization{
     }
 
 L:SetMiscLocalization{
+    DBM_BLOODBOIL_YELL_PULL				= "Horde will... crush you.";
 }
 
 -- DBM_BLOODBOIL_NAME					= "Gurtogg Bloodboil";
@@ -182,6 +191,7 @@ L:SetOptionLocalization{
     }
 
 L:SetMiscLocalization{
+    DBM_SOULS_YELL_PULL					= "Pain and suffering are all that await you!" -- Essence of Suffering
 }
 
 -- DBM_SOULS_NAME						= "Essence of Souls"
@@ -281,6 +291,10 @@ L:SetOptionLocalization{
     }
 
 L:SetMiscLocalization{
+    DBM_COUNCIL_YELL_PULL1				= "Common... such a crude language. Bandal!",
+    DBM_COUNCIL_YELL_PULL2				= "You wish to test me?",
+    DBM_COUNCIL_YELL_PULL3				= "I have better things to do...",
+    DBM_COUNCIL_YELL_PULL4				= "Flee or die!"
 }
 
 -- DBM_COUNCIL_NAME					= "Illidari Council"
@@ -332,6 +346,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+    TimerAddsSpawn	                    = "Adds spawning"
 }
 
 L:SetOptionLocalization{
@@ -339,7 +354,13 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
     DBM_ILLIDAN_YELL_PULL				= "You are not prepared!",
+    DBM_ILLIDAN_YELL_PULL_RP			= "Akama. Your duplicity is hardly surprising. I should have slaughtered you and your malformed brethren long ago.",
     UnharnessedBlade			        = "Blade on me!",
+    DBM_ILLIDAN_YELL_DEMON              = "You know nothing of power!",
+    Phase5                              = "It is finished. You are beaten.",
+    TimerCombatStart                    = "Combat starts",
+    TimerHumanForm                      = "Human Form",
+    TimerDemonForm                      = "Demon Form",
 }
 
 -- DBM_ILLIDAN_NAME					= "Illidan Stormrage"
