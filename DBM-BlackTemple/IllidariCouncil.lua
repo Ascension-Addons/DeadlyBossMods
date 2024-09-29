@@ -3,6 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 5019 $"):sub(12, -3))
 mod:SetCreatureID(22949, 22950, 22951, 22952)
+mod:SetUsedIcons(4,5,6)
 mod:RegisterCombat("combat", 22949, 22950, 22951, 22952)
 
 mod:RegisterEvents(
@@ -24,7 +25,7 @@ local timerNextSadism				= mod:NewNextTimer(45, 2144464)
 local timerSadism					= mod:NewCastTimer(3.5, 2144464)
 
 --- Mythic/Ascended
-local specWarnEmpoweredSadism		= mod:NewSpecialWarning("Empowered Sadism", 2144514, 3)
+local specWarnEmpoweredSadism		= mod:NewSpecialWarningSpell(2144514)
 local timerCastEmpoweredSadism		= mod:NewCastTimer(3.5, 2144514)
 
 
@@ -33,10 +34,10 @@ local warnSmokeBomb					= mod:NewSpellAnnounce(2144560, 3)
 local timerNextSmokeBomb			= mod:NewNextTimer(60, 2144560)
 
 --Gathios the Shatterer
-local warnDeathSentence 			= mod:NewAnnounce("Death Sentence on %s", 3, 2144260)
-local warnEmpoweredDeathSentence	= mod:NewAnnounce("Empowered Death Sentence on %s", 3, 214431)
+local warnDeathSentence				= mod:NewTargetAnnounce(2144260, 3)
+local warnEmpoweredDeathSentence	= mod:NewTargetAnnounce(2144310, 3)
 local specWarnDeathSentence			= mod:NewSpecialWarningYou(2144260)
-local specWarnEmpoweredDeathSentence= mod:NewSpecialWarning("Empowered Death Sentence on you", 3, 214431)
+local specWarnEmpoweredDeathSentence= mod:NewSpecialWarningYou(2144310, 4)
 
 local timerNextDeathSentence		= mod:NewNextTimer(60, 2144260)
 local timerDeathSentence			= mod:NewTargetTimer(10, 2144260)
@@ -46,10 +47,11 @@ local timerNextConsecrate			= mod:NewNextTimer(15, 2144256, nil, false)
 local timerNextRuneofPower			= mod:NewNextTimer(60, 2144368)
 local warnNetherprotection			= mod:NewSpellAnnounce(2144351, 3)
 local timerNextNetherProtection		= mod:NewNextTimer(30, 2144351)
+local timerTargetNetherProtection	= mod:NewTargetTimer(120, 2144351)
 
 --Authority
-local timerCrownofCommand			= mod:NewTimer(18, "Crown of Command on %s", 2144201)
-local warnCrownofCommand			= mod:NewAnnounce("Crown of Command on %s", 3, 2144201)
+local timerCrownofCommand			= mod:NewTargetTimer(18, 2144201)
+local warnCrownofCommand			= mod:NewSpellAnnounce(2144201, 3)
 local councilDeath = 0
 
 function mod:OnCombatStart(delay)
@@ -65,15 +67,15 @@ end
 
 function mod:SmokeBomb()
 	warnSmokeBomb:Show()
-	timerNextSmokeBomb:cancel()
+	timerNextSmokeBomb:Cancel()
 	if councilDeath == 0 then
-		timerNextSmokeBomb:start(60)
+		timerNextSmokeBomb:Start(60)
 	elseif councilDeath == 1 then
-		timerNextSmokeBomb:start(45)
+		timerNextSmokeBomb:Start(45)
 	elseif councilDeath == 2 then
-		timerNextSmokeBomb:start(30)
+		timerNextSmokeBomb:Start(30)
 	elseif councilDeath == 3 then
-		timerNextSmokeBomb:start(15)
+		timerNextSmokeBomb:Start(15)
 	end
 end
 
@@ -96,7 +98,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnDeathSentence:Show(args.destName)
 		end
 		timerDeathSentence:Start(args.destName)
-		self:SetIcon(args.destName, 8, 15)
+		if DBM:AntiSpam(2) then
+			self:SetIcon(args.destName, 6, 15)
+		elseif DBM:AntiSpam(2) then
+			self:SetIcon(args.destName, 5, 10)
+		else
+			self:SetIcon(args.destName, 4, 10)
+		end
 		if DBM:AntiSpam(2,5) then
 			if councilDeath == 0 then
 				timerNextDeathSentence:Start(60)
@@ -110,29 +118,36 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(2144310) then
 		if args:IsPlayer() then
-				specWarnEmpoweredDeathSentence:Show();
+			specWarnEmpoweredDeathSentence:Show();
 		else
-		warnEmpoweredDeathSentence:Show(args.destName)
+			warnEmpoweredDeathSentence:Show(args.destName)
 		end
 		timerDeathSentence:Start(args.destName)
-			self:SetIcon(args.destName, 8, 15)
-			if DBM:AntiSpam(2,4) then
-				if councilDeath == 0 then
-					timerNextDeathSentence:Start(60)
-				elseif councilDeath == 1 then
-					timerNextDeathSentence:Start(45)
-				elseif councilDeath == 2 then
-					timerNextDeathSentence:Start(30)
-				elseif councilDeath == 3 then
-					timerNextDeathSentence:Start(15)
-				end
+		if DBM:AntiSpam(2) then
+			self:SetIcon(args.destName, 6, 15)
+		elseif DBM:AntiSpam(2) then
+			self:SetIcon(args.destName, 5, 10)
+		else
+			self:SetIcon(args.destName, 4, 10)
+		end
+		if DBM:AntiSpam(2,4) then
+			if councilDeath == 0 then
+				timerNextDeathSentence:Start(60)
+			elseif councilDeath == 1 then
+				timerNextDeathSentence:Start(45)
+			elseif councilDeath == 2 then
+				timerNextDeathSentence:Start(30)
+			elseif councilDeath == 3 then
+				timerNextDeathSentence:Start(15)
 			end
+		end
 	elseif args:IsSpellID(2144256) then
 		timerNextConsecrate:Start()
 	elseif args:IsSpellID(2144368, 2144418) and DBM:AntiSpam(20, 2) then
 		timerNextRuneofPower:Start()
 	elseif args:IsSpellID(2144351, 2144401) then
 		warnNetherprotection:Show()
+		timerTargetNetherProtection:Start()
 	end
 	if args:IsSpellID(2144201) then
 		timerCrownofCommand:Start(args.destName)

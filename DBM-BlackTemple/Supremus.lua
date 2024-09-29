@@ -22,13 +22,14 @@ local warnThreatDetected			= mod:NewTargetAnnounce(2142765, 3)
 
 local timerTitanic					= mod:NewCastTimer(6, 2142758)
 local timerSupreme					= mod:NewCastTimer(2, 2142764)
-local timerThreatDetected			= mod:NewTargetTimer(60, 2142765)
+local timerThreatDetected			= mod:NewTargetTimer(120, 2142765)
+local timerNextAdds					= mod:NewNextTimer(45, 29316)
 
 local timerEruption					= mod:NewCastTimer(4, 2142774)
-local timerNextPillar				= mod:NewNextTimer(15, 2142574)
+local timerNextPillar				= mod:NewNextTimer(20, 2136441)
 
 local warnPhase2					= mod:NewPhaseAnnounce(2)
-local warnPhase2Soon				= mod:NewAnnounce(L.WarnPhase2Soon, 1)
+local warnPhaseSoon					= mod:NewAnnounce(L.WarnPhaseSoon, 1)
 local timerEnrage					= mod:NewTimer(600, "Berserk", 44427)
 local oldMarkThreat
 local oldMarkTarget
@@ -37,14 +38,22 @@ mod:AddBoolOption(L.threatIconsOpt)
 
 function mod:OnCombatStart(delay)
 	oldMarkThreat = 0
-	self:ScheduleMethod(0-delay, "NewPillar")
+	timerNextAdds:Start(15)
+	self:ScheduleMethod(15-delay, "NewAdds")
+	self:ScheduleMethod(15-delay, "NewPillar")
 	timerEnrage:Start()
 end
 
 function mod:NewPillar()
 	self:UnscheduleMethod("NewPillar")
 	timerNextPillar:Start()
-	self:ScheduleMethod(15, "NewPillar")
+	self:ScheduleMethod(20, "NewPillar")
+end
+
+function mod:NewAdds()
+	self:UnscheduleMethod("NewAdds")
+	timerNextAdds:Start()
+	self:ScheduleMethod(46, "NewAdds")
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -52,6 +61,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnPhase2:Show()
 		timerThreatDetected:Stop()
 		timerEnrage:Stop()
+		self:UnscheduleMethod("NewAdds")
+		self:UnscheduleMethod("NewPillar")
 	elseif args:IsSpellID(2142751) then
 		warnCracked:Show(args.spellName, args.destName, args.amount or 1)
 	elseif args:IsSpellID(2142765) then
@@ -59,8 +70,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerThreatDetected:Stop()
 		timerThreatDetected:Start(args.destName)
 		if self.Options.threatIconsOpt then
-			oldMarkThreat, oldMarkTarget = self:GetIcon(args.destName), args.destName
-			self:SetIcon(args.destName, 8, 60)
+			oldMarkThreat, oldMarkTarget = self:GetIcon(args.destName) or 0, args.destName
+			self:SetIcon(args.destName, 8, 120)
 		end
 	end
 end
@@ -68,7 +79,7 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(2142765) then
 		if self.Options.threatIconsOpt then
-			self:SetIcon(oldMarkTarget, oldMarkThreat or 0)
+			self:SetIcon(oldMarkTarget or args.destName, oldMarkThreat or 0)
 		end
 	end
 end
@@ -99,8 +110,8 @@ mod.SPELL_MISSED = mod.SPELL_DAMAGE -- Hack to include SPELL_MISSED as well with
 function mod:UNIT_HEALTH(unit)
 	if mod:GetUnitCreatureId(unit) == 22898 then
 		local hp = (math.max(0,UnitHealth(unit)) / math.max(1, UnitHealthMax(unit))) * 100;
-		if (hp <= 40) and DBM:AntiSpam(600) then
-			warnPhase2Soon:Show()
+		if (hp <= 35) and DBM:AntiSpam(600) then
+			warnPhaseSoon:Show(2)
         end
     end
 end
