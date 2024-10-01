@@ -55,7 +55,8 @@ local warningWiShahrazVirgo		= mod:NewAnnounce(L.ShahrazVirgo, 2, 2144096)
 
 --Ascended
 local warningALittleChat		= mod:NewSpellAnnounce(2144007, 3)
-local timerNextALittleChat		= mod:NewNextTimer(48, 2144007)
+local timerCastALittleChat		= mod:NewCastTimer(4, 2144007)
+local timerNextALittleChat		= mod:NewNextTimer(49, 2144007)
 
 --local
 local isMother		=	false
@@ -84,10 +85,8 @@ function mod:NewThoughts()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(2144012) then
-		warningFatalAttraction:Show()
-		timerNextFatalAttraction:Start()
-	elseif args:IsSpellID(2144050, 2144051) then
+
+	if args:IsSpellID(2144050, 2144051) then
 		warningBossRunning:Show()
 		timerSinfulThoughts:Stop()
 		timerSinisterThoughts:Stop()
@@ -111,6 +110,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warningWiShahrazVirgo:Show()
 	elseif args:IsSpellID(2144007) then
 		warningALittleChat:Show()
+		timerNextALittleChat:Start()
+		timerCastALittleChat:Start()
 	end
 end
 
@@ -156,6 +157,9 @@ function mod:SPELL_DAMAGE(args)
 			timerVileThoughts:Stop()
 			timerWickedThoughts:Start()
 		end
+	elseif args:IsSpellID(2144012) and DBM:AntiSpam(15) then
+		warningFatalAttraction:Show()
+		timerNextFatalAttraction:Start()
 	end
 end
 
