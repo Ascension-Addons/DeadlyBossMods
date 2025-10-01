@@ -45,18 +45,18 @@ localization.tw.lua
 localization.kr.lua
 localization.es.lua
 MapSizes.lua
-ArachnidQuarter\Anub'Rekhan.lua
-ArachnidQuarter\Faerlina.lua
-ArachnidQuarter\Maexxna.lua
-ConstructQuarter\Patchwerk.lua
-ConstructQuarter\Grobbulus.lua
-ConstructQuarter\Gluth.lua
-ConstructQuarter\Thaddius.lua
-PlagueQuarter\Noth.lua
-PlagueQuarter\Heigan.lua
-PlagueQuarter\Loatheb.lua
-MilitaryQuarter\Razuvious.lua
-MilitaryQuarter\Gothik.lua
-MilitaryQuarter\Horsemen.lua
-FrostwyrmLair\Sapphiron.lua
-FrostwyrmLair\Kel'Thuzad.lua
+# ArachnidQuarter\Anub'Rekhan.lua
+# ArachnidQuarter\Faerlina.lua
+# ArachnidQuarter\Maexxna.lua
+# ConstructQuarter\Patchwerk.lua
+# ConstructQuarter\Grobbulus.lua
+# ConstructQuarter\Gluth.lua
+# ConstructQuarter\Thaddius.lua
+# PlagueQuarter\Noth.lua
+# PlagueQuarter\Heigan.lua
+# PlagueQuarter\Loatheb.lua
+# MilitaryQuarter\Razuvious.lua
+# MilitaryQuarter\Gothik.lua
+# MilitaryQuarter\Horsemen.lua
+# FrostwyrmLair\Sapphiron.lua
+# FrostwyrmLair\Kel'Thuzad.lua
