@@ -35,7 +35,7 @@ local warnStun		= mod:NewSpellAnnounce(6524)
 local timerStun		= mod:NewNextTimer(12, 6524)
 -- local warnTarget		= mod:NewSpellAnnounce(6524)
 --Gri'lek sets his sights on Red!
-local warnStun		= mod:NewSpecialWarningYou(40414)
+local warnFixate	= mod:NewSpecialWarningYou(40414)
 local timerFixate	= mod:NewTargetTimer(20, 40414)
 
 local spamSleep = 0
@@ -61,7 +61,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, src)
 	local targetName = msg:match("Gri\'lek sets his sights on (.+)!");
 	if targetName then
 		if target == UnitName("player") then
-			warnStun:Show()
+			warnFixate:Show()
 		end
 		timerFixate:Start(targetName)
 	end
